@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstddef> // for SIZE_t
 #include <cstdint>
 
@@ -33,10 +35,15 @@ class KernelPtr
 
     T& operator=(T rhs) { ptr = rhs.ptr; return *this; }
 
-    	bool isValidAddress(const void* ptr) 
+    bool isValidAddress(const void* ptr) 
 	{
 		auto p = T::isValidTypeAdress(ptr);
 		return p;
+	}
+
+	uintptr_t physInt() const
+	{
+		return T::physint();
 	}
   protected:
 	//uint32_t ptr;

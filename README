@@ -1,0 +1,10 @@
+Compiling with clang:
+
+clang++ --std=c++0x main.cc
+
+TODO:
+
+1. = operator may not be inherited
+2. Do derived classes need their own ptr variable?
+
+

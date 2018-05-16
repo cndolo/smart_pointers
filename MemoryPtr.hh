@@ -19,14 +19,14 @@ class MemoryPtr : public KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>
 		}
 
 		static MemoryPtr toImageFromMemory(MemoryPtr* mp) {
-		//	ASSERT(isValidAddress(mp));
+			ASSERT(isValidAddress(mp));
 			return MemoryPtr(reinterpret_cast<uintptr_t>(mp)-PHYS);
 		}
 
 		uintptr_t physint() const { return ptr;}
 
 		bool logint() const {
-			//ASSERT(kernelmem());
+			ASSERT(kernelmem());
 			return ptr + PHYS;
 		}
 

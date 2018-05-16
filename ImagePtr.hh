@@ -12,9 +12,9 @@ class ImagePtr : public KernelPtr<ImagePtr<PHYS, SIZE, VIRT>>
 
 	public:
 
-		using KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>::KernelPtr;
+		using KernelPtr<ImagePtr<PHYS, SIZE, VIRT>>::KernelPtr;
 			
-		bool isValidTypeAddress(const void* ptr)
+	 	inline bool isValidTypeAddress(const void* ptr)
 		{
 			auto p = reinterpret_cast<uintptr_t>(ptr);
 			return p = (p >= VIRT) && (p < VIRT + SIZE);
@@ -27,4 +27,11 @@ class ImagePtr : public KernelPtr<ImagePtr<PHYS, SIZE, VIRT>>
 			//return KernelPtr<MemoryPtr>(reinterpret_cast<uintptr_t>(ip)-VIRT);		
 		}
 
+		uintptr_t physint() const { return ptr; }
+
+		
+
+
+	protected:
+		uint64_t ptr;
 };
