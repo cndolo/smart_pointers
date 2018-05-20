@@ -29,9 +29,11 @@ class ImagePtr : public KernelPtr<ImagePtr<PHYS, SIZE, VIRT>>
 
 		uintptr_t physint() const { return ptr; }
 
-		
+		static uint64_t phys() { return PHYS; }		
 
+		static size_t size() { return SIZE; }
 
+		static uint64_t virt() { return VIRT; }
 	protected:
 		uint64_t ptr;
 };

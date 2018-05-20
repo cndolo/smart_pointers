@@ -32,7 +32,11 @@ class MemoryPtr : public KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>
 
 		bool kernelmem() const { return ptr < SIZE; }
 
-				
+		static uint64_t phys() { return PHYS; }
+
+		static size_t size() { return SIZE; }
+
+		static uint64_t virt() { return VIRT; }
     	bool canonical() const
     	{
       		static constexpr uintptr_t CANONICAL_MASK = ((1ull << (64 - 48))-1) << 48;

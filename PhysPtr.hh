@@ -22,4 +22,9 @@ class PhysPtr : public KernelPtr<PhysPtr<PHYS, SIZE, VIRT>>
 			return PhysPtr(phys + PHYS);
 		}
 
+		static uint64_t phys() { return PHYS; }
+
+		static size_t size() { return SIZE; }
+
+		static uint64_t virt() { return VIRT; }
 };
