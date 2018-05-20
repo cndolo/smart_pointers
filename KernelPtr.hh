@@ -45,7 +45,19 @@ class KernelPtr
 	{
 		return T::physint();
 	}
-  protected:
+
+	const uint64_t PHYS() {
+		return T::phys();
+	}
+
+	const uint64_t SIZE() {
+		return T::size();
+	}
+
+	const uint64_t VIRT() {
+		return T::virt();
+	}  
+protected:
 	//uint32_t ptr;
 	uint64_t ptr;
 };
