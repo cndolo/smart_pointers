@@ -18,6 +18,9 @@ int main(int argv, char* argc[]) {
 	MemoryPtr<phys, size, log> * mp;
 	KernelPtr<MemoryPtr<phys, size, log>> *kp;
 
+	std::cout<<"phys: "<<kp->PHYS()<<std::endl;
+	std::cout<<"size: "<<kp->SIZE()<<std::endl;
+	std::cout<<"virt: "<<kp->VIRT()<<std::endl;
 
 	/*	KernelImPtr<phys, size, log> *kip;
 	
