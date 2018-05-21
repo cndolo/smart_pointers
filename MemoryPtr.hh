@@ -19,7 +19,7 @@ class MemoryPtr : public KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>
 		}
 
 		static MemoryPtr toImageFromMemory(MemoryPtr* mp) {
-			ASSERT(isValidAddress(mp));
+			//ASSERT(isValidTypeAddress(reinterpret_cast<const void*>(mp)));
 			return MemoryPtr(reinterpret_cast<uintptr_t>(mp)-PHYS);
 		}
 

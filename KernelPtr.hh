@@ -1,4 +1,4 @@
-#pragma once
+
 
 #include <cstddef> // for SIZE_t
 #include <cstdint>
@@ -35,7 +35,8 @@ class KernelPtr
 
     bool isValidAddress(const void* ptr) 
 	{
-		auto p = T::isValidTypeAdress(ptr);
+		auto p= static_cast<T*>(this)->isValidTypeAddress(ptr);
+		//auto p = T::isValidTypeAddress(ptr);
 		return p;
 	}
 

@@ -22,18 +22,15 @@ int main(int argv, char* argc[]) {
 	std::cout<<"size: "<<kp->SIZE()<<std::endl;
 	std::cout<<"virt: "<<kp->VIRT()<<std::endl;
 
-	/*	KernelImPtr<phys, size, log> *kip;
+	bool valid = kp->isValidAddress(ptr);
+	bool valid2 = kp->isValidAddress((char*)ptr3 + 1);
 	
-	bool val = kip->isKernelImAddress(ptr);
-	bool val2 = kip->isKernelImAddress(ptr2);
-	bool val3 = kip->isKernelImAddress(ptr);
-	std::cout<<"Ptr1 valid: "<<val<<std::endl;
-	std::cout<<"Ptr2 valid: "<<val2<<std::endl;
-	std::cout<<"Ptr3 valid: "<<val3<<std::endl;
+	std::cout<<"Ptr1 valid: "<<valid<<std::endl;
+	std::cout<<"Ptr2 valid: "<<valid2<<std::endl;
 
-	uintptr_t physint = kip->physint();
-    std::cout<<"Ptr: "<<physint<<std::endl;
-
-	bool kimage = kip->kernelImage();
-	std::cout<<"kernelImage(): "<<kimage<<std::endl;*/
+	bool valid3 =mp->isValidTypeAddress(ptr);
+	std::cout<<"Ptr2 valid: "<<valid3<<std::endl;
+	
+	MemoryPtr<phys, size, log>* mp2;
+	*mp2 = MemoryPtr<phys,size,log>::toImageFromMemory(mp);
 }
