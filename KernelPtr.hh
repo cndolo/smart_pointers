@@ -33,8 +33,6 @@ class KernelPtr
     T operator-(size_t inc) const { return T(ptr-sizeof(T)*inc); }
     size_t operator-(T rhs) const { return (ptr-rhs)/sizeof(T); }
 
-    T& operator=(T rhs) { ptr = rhs.ptr; return *this; }
-
     bool isValidAddress(const void* ptr) 
 	{
 		auto p = T::isValidTypeAdress(ptr);

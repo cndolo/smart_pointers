@@ -46,7 +46,7 @@ class MemoryPtr : public KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>
 		MemoryPtr* log() const { return reinterpret_cast<MemoryPtr*>(logint()); }
 
 		MemoryPtr* operator->() const { return log(); }
-
+		MemoryPtr& operator=(MemoryPtr rhs) { ptr = rhs.ptr; return *this; }	
 	protected:
 		uintptr_t ptr;
 		
@@ -60,3 +60,24 @@ class MemoryPtr32 : public KernelPtr<MemoryPtr32<>>
 		}
 
 };*/
+
+template <uint32_t PHYS, size_t SIZE, uint32_t VIRT>
+class MemoryPtr32 : public KernelPtr<MemoryPtr32<PHYS, SIZE, VIRT>>
+{
+	MemoryPtr32() : ptr(0) {}
+	
+	explicit MemoryPtr32(uint32_t ptr) : ptr(ptr) {}
+	explicit MemoryPtr32(uint64_t ptr) : ptr(uint32_t(ptr)) {
+		ASSERT(ptr <= 0xFFFFFFFF);
+	}
+
+	uintptr_t physint() const { return ptr; }
+	
+	uintptr_t logint() const { return uintptr_t(ptr) + PHYS; }
+
+	MemoryPtr32* log() const { return reinterpret_cast<MemoryPtr32*>(logint()); }
+
+	MemoryPtr32* operator->() const { return log(); }
+protected:
+ uint32_t ptr;
+};
