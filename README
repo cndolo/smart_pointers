@@ -1,10 +1,15 @@
 Compiling with clang:
 
 clang++ --std=c++0x main.cc
+with gcc:
+
+g++ -fpermissive main.cc
 
 TODO:
 
 1. = operator may not be inherited
 2. Do derived classes need their own ptr variable?
-
+3. 32 bit offset new implementation
+4. Return types of conversion functions (forward declaration not working)
+5. Find new name for kernelmem() function that can be used universally
 
