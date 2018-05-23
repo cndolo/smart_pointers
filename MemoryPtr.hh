@@ -3,6 +3,8 @@
 
 #include "KernelPtr.hh"
 
+template <uint64_t IM_PHYS, size_t IM_SIZE, uint64_t IM_VIRT> class ImagePtr;
+
 template<uint64_t PHYS, size_t SIZE, uint64_t VIRT>
 
 class MemoryPtr : public KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>
