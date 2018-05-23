@@ -109,5 +109,5 @@ class MemoryPtr32 : public KernelPtr<MemoryPtr32<PHYS, SIZE, VIRT>>
 
 		MemoryPtr32* operator->() const { return logical(); }
 	protected:
- uint32_t ptr;
+		uint32_t ptr;
 };

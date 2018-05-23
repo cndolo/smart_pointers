@@ -80,7 +80,7 @@ class ImagePtr32 : public KernelPtr<ImagePtr32<PHYS, SIZE, VIRT>>
 			return ImagePtr32(reinterpret_cast<uintptr_t>(ip)-VIRT + PHYS);
 			//return KernelPtr<ImagePtr>(reinterpret_cast<uintptr_t>(ip)-VIRT);		
 		}	
-		bool imagemem() const { return ptr < SIZE; }
+		bool kernelmem() const { return ptr < SIZE; }
 
 		bool canonical() const
   		{
