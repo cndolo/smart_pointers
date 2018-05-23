@@ -27,27 +27,28 @@ class MemoryPtr : public KernelPtr<MemoryPtr<PHYS, SIZE, VIRT>>
 
 		uintptr_t physint() const { return ptr;}
 
-		bool logint() const {
+		uintptr_t logint() const {
 			ASSERT(kernelmem());
 			return ptr + PHYS;
 		}
 
 		bool kernelmem() const { return ptr < SIZE; }
 
+		bool canonical() const
+  		{
+      			static constexpr uintptr_t CANONICAL_MASK = ((1ull << (64 - 48))-1) << 48;
+      			return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
+    		}
+
 		static uint64_t phys() { return PHYS; }
 
 		static size_t size() { return SIZE; }
 
 		static uint64_t virt() { return VIRT; }
-    	bool canonical() const
-    	{
-      		static constexpr uintptr_t CANONICAL_MASK = ((1ull << (64 - 48))-1) << 48;
-      		return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
-    	}
+    	
+		MemoryPtr* logical() const { return reinterpret_cast<MemoryPtr*>(logint()); }
 
-		MemoryPtr* log() const { return reinterpret_cast<MemoryPtr*>(logint()); }
-
-		MemoryPtr* operator->() const { return log(); }
+		MemoryPtr* operator->() const { return logical(); }
 		MemoryPtr& operator=(MemoryPtr rhs) { ptr = rhs.ptr; return *this; }	
 	protected:
 		uintptr_t ptr;
@@ -66,20 +67,47 @@ class MemoryPtr32 : public KernelPtr<MemoryPtr32<>>
 template <uint32_t PHYS, size_t SIZE, uint32_t VIRT>
 class MemoryPtr32 : public KernelPtr<MemoryPtr32<PHYS, SIZE, VIRT>>
 {
-	MemoryPtr32() : ptr(0) {}
+	public: 
+		
+		MemoryPtr32() : ptr(0) {}
 	
-	explicit MemoryPtr32(uint32_t ptr) : ptr(ptr) {}
-	explicit MemoryPtr32(uint64_t ptr) : ptr(uint32_t(ptr)) {
-		ASSERT(ptr <= 0xFFFFFFFF);
-	}
+		explicit MemoryPtr32(uint32_t ptr) : ptr(ptr) {}
+		explicit MemoryPtr32(uint64_t ptr) : ptr(uint32_t(ptr)) {
+			ASSERT(ptr <= 0xFFFFFFFF);
+		}
 
-	uintptr_t physint() const { return ptr; }
+		inline bool isValidTypeAddress(const void* ptr) 
+		{
+			auto p = reinterpret_cast<uintptr_t>(ptr);
+			return (p >= PHYS) && (p < PHYS + SIZE); 
+		}
+
+		static MemoryPtr32 toImageFromMemory(MemoryPtr32* mp) {
+			ASSERT(isValidTypeAddress(reinterpret_cast<const void*>(mp)));
+			return MemoryPtr32(reinterpret_cast<uintptr_t>(mp)-PHYS);
+		}
+
+		bool kernelmem() const { return ptr < SIZE; }
+
+		bool canonical() const
+  		{
+      			static constexpr uintptr_t CANONICAL_MASK = ((1ull << (64 - 48))-1) << 48;
+      			return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
+    		}
+
+		uintptr_t physint() const { return ptr; }
 	
-	uintptr_t logint() const { return uintptr_t(ptr) + PHYS; }
+		uintptr_t logint() const { return uintptr_t(ptr) + PHYS; }
 
-	MemoryPtr32* log() const { return reinterpret_cast<MemoryPtr32*>(logint()); }
+		static uint64_t phys() { return PHYS; }
 
-	MemoryPtr32* operator->() const { return log(); }
-protected:
+		static size_t size() { return SIZE; }
+
+		static uint64_t virt() { return VIRT; }
+
+		MemoryPtr32* logical() const { return reinterpret_cast<MemoryPtr32*>(logint()); }
+
+		MemoryPtr32* operator->() const { return logical(); }
+	protected:
  uint32_t ptr;
 };
