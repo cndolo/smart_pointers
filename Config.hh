@@ -1,3 +1,4 @@
+#pragma once
 #include <cstddef>
 #include <cstdint>
 
@@ -22,5 +23,15 @@ public:
 	static void setSize(size_t size) {
 		config_consts.SIZE = size;
 	}
+	
+	static size_t getSize() {
+		return config_consts.SIZE;
+	}
 
+	static uint64_t getPhys() {
+		return config_consts.PHYS;
+	}
+	static uint64_t getVirt() { 
+		return config_consts.VIRT;
+	}
 };
