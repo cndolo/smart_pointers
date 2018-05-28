@@ -1,17 +1,14 @@
 #include "Config.hh"
 
-template <typename T>
+template<typename t>
 
-class AbstractOffsetPtr : public T {
+class AbstractPhysPtr64 : public T {
 
-public: 
+public:
 
-	bool isValidTypeAddress(const void* ptr) 
+	bool isValidAddress(const void* ptr) 
 	{
 		auto p = reinterpret_cast<uintptr_t>(ptr);
 		return (p >= T::getPhys()) && (p < T::getPhys() + T::getSize()); 
 	}
-
-	
 };
-
