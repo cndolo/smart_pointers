@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "Config.hh"
 #include "AbstractOffsetPtr.hh"
+#include "AbstractPhysPtr64.hh"
 
 int main(int argv, char* argc[]) {
 
@@ -31,7 +32,23 @@ int main(int argv, char* argc[]) {
 	
 	bool val1 = ap1->isValidTypeAddress(ptr);
 	bool val2 = ap1->isValidTypeAddress(ptr2);
-
+	bool val3 = ap1->isValidTypeAddress(ptr3);
+	
 	std::cout<<ptr<<" valid: "<<val1<<std::endl;
 	std::cout<<ptr2<<" valid: "<<val2<<std::endl;
+	std::cout<<ptr3<<" valid: "<<val3<<std::endl;
+
+	AbstractPhysPtr64<config64Phys>* apPhys;
+
+	std::cout<<"size of config64phys: "<<sizeof(config64Phys)<<std::endl;
+	std::cout<<"size of AbstractPhysPtr64: "<<sizeof(apPhys)<<std::endl;
+		
+	bool val4 = apPhys->isValidAddress(ptr);
+	bool val5 = apPhys->isValidAddress(ptr2);
+	bool val6 = apPhys->isValidAddress(ptr3);
+
+	std::cout<<ptr<<" valid: "<<val4<<std::endl;
+	std::cout<<ptr2<<" valid: "<<val5<<std::endl;
+	std::cout<<ptr3<<" valid: "<<val6<<std::endl;
+
 }
