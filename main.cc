@@ -5,6 +5,7 @@
 #include "Config.hh"
 #include "AbstractOffsetPtr.hh"
 #include "AbstractPhysPtr64.hh"
+#include "AbstractPhysPtr32.hh"
 
 int main(int argv, char* argc[]) {
 

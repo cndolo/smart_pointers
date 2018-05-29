@@ -6,7 +6,9 @@ class AbstractPhysPtr64 : public T {
 
 public:
 
-	//TODO: Add constructor
+	AbstractPhysPtr64() : ptr(0) {}
+
+	explicit AbstractPhysPtr64(uint64_t ptr) : ptr(ptr) {} 
 
 	bool isValidAddress(const void* ptr) 
 	{
