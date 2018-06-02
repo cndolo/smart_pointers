@@ -64,7 +64,7 @@ public:
 	}
 };
 
-class config64Phys {
+class config64phys {
 
 public:
 

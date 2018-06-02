@@ -6,6 +6,7 @@
 #include "AbstractOffsetPtr.hh"
 #include "AbstractPhysPtr64.hh"
 #include "AbstractPhysPtr32.hh"
+#include "ImagePhysPtr32.hh"
 
 int main(int argv, char* argc[]) {
 
@@ -39,17 +40,30 @@ int main(int argv, char* argc[]) {
 	std::cout<<ptr2<<" valid: "<<val2<<std::endl;
 	std::cout<<ptr3<<" valid: "<<val3<<std::endl;
 
-	AbstractPhysPtr64<config64Phys>* apPhys;
+	AbstractPhysPtr64<config64phys>* apPhys;
 
-	std::cout<<"size of config64phys: "<<sizeof(config64Phys)<<std::endl;
+	std::cout<<"size of config64phys: "<<sizeof(config64phys)<<std::endl;
 	std::cout<<"size of AbstractPhysPtr64: "<<sizeof(apPhys)<<std::endl;
 		
-	bool val4 = apPhys->isValidAddress(ptr);
-	bool val5 = apPhys->isValidAddress(ptr2);
-	bool val6 = apPhys->isValidAddress(ptr3);
+	bool val4 = apPhys->isKernelAddress(ptr);
+	bool val5 = apPhys->isKernelAddress(ptr2);
+	bool val6 = apPhys->isKernelAddress(ptr3);
 
 	std::cout<<ptr<<" valid: "<<val4<<std::endl;
 	std::cout<<ptr2<<" valid: "<<val5<<std::endl;
 	std::cout<<ptr3<<" valid: "<<val6<<std::endl;
 
+	AbstractPhysPtr32<config32phys>* apPhys32;
+
+	std::cout<<"size of AbstractPhysPtr32: "<<sizeof(apPhys32)<<std::endl;
+
+	bool val7 = apPhys32->isValidAddress(ptr);
+	bool val8 = apPhys32->isValidAddress(ptr2);
+	bool val9 = apPhys32->isValidAddress(ptr3);
+
+	std::cout<<ptr<<" valid: "<<val7<<std::endl;
+	std::cout<<ptr2<<" valid: "<<val8<<std::endl;
+	std::cout<<ptr3<<" valid: "<<val9<<std::endl;
+
+	ImagePhysPtr32* ip = new ImagePhysPtr32();
 }

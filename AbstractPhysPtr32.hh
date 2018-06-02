@@ -1,12 +1,10 @@
-#include "Config.hh"
-
 template <typename T>
 
 class AbstractPhysPtr32 : public T {
 
 public:
 
-	AbstractPhysPtr32() : ptr(ptr) {}
+	AbstractPhysPtr32() : ptr(0) {}
 
 	explicit AbstractPhysPtr32(uint32_t ptr) : ptr(ptr) {}
 
@@ -15,9 +13,24 @@ public:
 	bool isValidAddress(const void* ptr) 
 	{
 		auto p = reinterpret_cast<uintptr_t>(ptr);
-				return (p >= T::getPhys()) && (p < T::getPhys() + T::getSize()); 
+		return (p >= T::getPhys()) && (p < T::getPhys() + T::getSize()); 
 	}
-    explicit operator bool() const { return ptr != 0; }
+    
+	static AbstractPhysPtr32 phys2kernel (AbstractPhysPtr32* phys) {
+		//ASSERT(isValidAddress(reinterpret_cast<const void*>(phys)));
+		return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(phys) + T::getPhys());
+	}	
+	
+	/*static uintptr_t phys2kernel (AbstractPtr64* phys) {
+		//ASSERT(isValidAddress(reinterpret_cast<const void*>(phys)));
+		return (reinterpret_cast<uintptr_t>(phys) + T::getPhys());
+	}*/	
+
+	static AbstractPhysPtr32 fromPhys(AbstractPhysPtr32* ptr) {
+		return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(ptr));
+	}
+
+	explicit operator bool() const { return ptr != 0; }
     bool operator==(AbstractPhysPtr32 rhs) const { return ptr == rhs.ptr; }
     bool operator!=(AbstractPhysPtr32 rhs) const { return ptr != rhs.ptr; }
     bool operator<(AbstractPhysPtr32 rhs) const { return ptr < rhs.ptr; }
