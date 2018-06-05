@@ -2,65 +2,69 @@
 #include <cstddef>
 #include <cstdint>
 
-struct config_consts {
+struct config_consts{
 	uint64_t PHYS;
 	size_t SIZE;
 	uint64_t VIRT; 
-} config_consts;
+};
+
+config_consts off_config;
+config_consts phys32_config;
+config_consts phys64_config;
 
 class config32phys {
 
 public:
 
 	static void setPhys(uint64_t phys) {
-		config_consts.PHYS = phys;
+		off_config.PHYS = phys;
 	}
 
 	static void setVirt(uint64_t virt) {
-		config_consts.VIRT = virt;
+		off_config.VIRT = virt;
 	}
 
 	static void setSize(size_t size) {
-		config_consts.SIZE = size;
+		off_config.SIZE = size;
 	}
 	
 	static size_t getSize() {
-		return config_consts.SIZE;
+		return off_config.SIZE;
 	}
 
 	static uint64_t getPhys() {
-		return config_consts.PHYS;
+		return off_config.PHYS;
 	}
 
 	static uint64_t getVirt() { 
-		return config_consts.VIRT;
+		return off_config.VIRT;
 	}
 };
 class configOffset {
 	
 public:
 	static void setPhys(uint64_t phys) {
-		config_consts.PHYS = phys;
+		phys32_config.PHYS = phys;
 	}
 
 	static void setVirt(uint64_t virt) {
-		config_consts.VIRT = virt;
+		phys32_config.VIRT = virt;
 	}
 
 	static void setSize(size_t size) {
-		config_consts.SIZE = size;
+		phys32_config.SIZE = size;
 	}
 	
 	static size_t getSize() {
-		return config_consts.SIZE;
+		return phys32_config.SIZE;
 	}
 
 	static uint64_t getPhys() {
-		return config_consts.PHYS;
+		return phys32_config.PHYS;
 	}
 
 	static uint64_t getVirt() { 
-		return config_consts.VIRT;
+		return phys32_config.VIRT;
 	}
 };
 
@@ -69,26 +73,26 @@ class config64phys {
 public:
 
 	static void setPhys(uint64_t phys) {
-		config_consts.PHYS = phys;
+		phys64_config.PHYS = phys;
 	}
 
 	static void setVirt(uint64_t virt) {
-		config_consts.VIRT = virt;
+		phys64_config.VIRT = virt;
 	}
 
 	static void setSize(size_t size) {
-		config_consts.SIZE = size;
+		phys64_config.SIZE = size;
 	}
 	
 	static size_t getSize() {
-		return config_consts.SIZE;
+		return phys64_config.SIZE;
 	}
 
 	static uint64_t getPhys() {
-		return config_consts.PHYS;
+		return phys64_config.PHYS;
 	}
 
 	static uint64_t getVirt() { 
-		return config_consts.VIRT;
+		return phys64_config.VIRT;
 	}
 }; 

@@ -15,7 +15,7 @@ int main(int argv, char* argc[]) {
 	const uintptr_t log = 0x5200;
 	const size_t size = 20 * sizeof(int);
 	
-	const void* ptr = reinterpret_cast<const void*>(phys);
+	const void* ptr = reinterpret_cast<const void*>(phys + (size-1));
 	const void* ptr2 = reinterpret_cast<const void*>(phys+size+1);
 	const void* ptr3 = reinterpret_cast<const void*>(log + size);
 		
@@ -33,9 +33,9 @@ int main(int argv, char* argc[]) {
 		
 	AbstractOffsetPtr<configOffset>* ap1;
 	
-	bool val1 = ap1->isValidTypeAddress(ptr);
-	bool val2 = ap1->isValidTypeAddress(ptr2);
-	bool val3 = ap1->isValidTypeAddress(ptr3);
+	bool val1 = ap1->isKernelAddress(ptr);
+	bool val2 = ap1->isKernelAddress(ptr2);
+	bool val3 = ap1->isImageAddress(ptr3);
 	
 	std::cout<<ptr<<" valid: "<<val1<<std::endl;
 	std::cout<<ptr2<<" valid: "<<val2<<std::endl;
@@ -57,6 +57,9 @@ int main(int argv, char* argc[]) {
 	AbstractPhysPtr32<config32phys>* apPhys32;
 
 	std::cout<<"size of AbstractPhysPtr32: "<<sizeof(apPhys32)<<std::endl;
+	std::cout<<"phys: "<<config32phys::getPhys()<<std::endl;
+	std::cout<<"size: "<<config32phys::getSize()<<std::endl;
+	std::cout<<"virt: "<<config32phys::getVirt()<<std::endl;
 
 	bool val7 = apPhys32->isKernelAddress(ptr);
 	bool val8 = apPhys32->isImageAddress(ptr2);
