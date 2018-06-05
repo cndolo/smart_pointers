@@ -7,6 +7,7 @@
 #include "AbstractPhysPtr64.hh"
 #include "AbstractPhysPtr32.hh"
 #include "ImagePhysPtr32.hh"
+#include "KernelPhysPtr32.hh"
 
 int main(int argv, char* argc[]) {
 
@@ -57,13 +58,15 @@ int main(int argv, char* argc[]) {
 
 	std::cout<<"size of AbstractPhysPtr32: "<<sizeof(apPhys32)<<std::endl;
 
-	bool val7 = apPhys32->isValidAddress(ptr);
-	bool val8 = apPhys32->isValidAddress(ptr2);
-	bool val9 = apPhys32->isValidAddress(ptr3);
+	bool val7 = apPhys32->isKernelAddress(ptr);
+	bool val8 = apPhys32->isImageAddress(ptr2);
+	bool val9 = apPhys32->isKernelAddress(ptr3);
 
 	std::cout<<ptr<<" valid: "<<val7<<std::endl;
 	std::cout<<ptr2<<" valid: "<<val8<<std::endl;
 	std::cout<<ptr3<<" valid: "<<val9<<std::endl;
 
 	ImagePhysPtr32* ip = new ImagePhysPtr32();
+	KernelPhysPtr32* kp = new KernelPhysPtr32();
+
 }

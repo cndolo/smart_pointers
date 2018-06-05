@@ -1,5 +1,3 @@
-#include "Config.hh"
-
 template<typename T>
 
 class AbstractPhysPtr64 : public T {
@@ -48,9 +46,9 @@ public:
 		return reinterpret_cast<AbstractPhysPtr64*>(reinterpret_cast<uintptr_t>(phys) + T::getPhys());
 	}	
 	
-	uint32_t kernel2phys(AbstractPhysPtr64* vp) {
+	uint64_t kernel2phys(AbstractPhysPtr64* vp) {
     	//ASSERT(isKernelAddress(vp));
-    	return uint32_t(reinterpret_cast<uintptr_t>(vp) - T::getPhys());
+    	return uint64_t(reinterpret_cast<uintptr_t>(vp) - T::getPhys());
   	}
 
 	AbstractPhysPtr64* image2kernel(AbstractPhysPtr64* vp) {
@@ -103,5 +101,8 @@ public:
 
 protected:
 	uint64_t ptr;
-	const char KERN_END = ("KERN_END");
+	//g++
+	//const char KERN_END = ("KERN_END");
+	//clang++
+	const char* KERN_END = "KERN_END";
 };
