@@ -8,6 +8,8 @@
 #include "AbstractPhysPtr32.hh"
 #include "ImagePhysPtr32.hh"
 #include "KernelPhysPtr32.hh"
+#include "ImageOffsetPtr.hh"
+#include "KernelOffsetPtr.hh"
 
 int main(int argv, char* argc[]) {
 
@@ -71,5 +73,9 @@ int main(int argv, char* argc[]) {
 
 	ImagePhysPtr32* ip = new ImagePhysPtr32();
 	KernelPhysPtr32* kp = new KernelPhysPtr32();
-
+	ImageOffsetPtr* io = new ImageOffsetPtr();
+	KernelOffsetPtr* ko = new KernelOffsetPtr();
+	
+	bool val10 = io->isKernelAddress(ptr);
+	std::cout<<ptr<<" valid: "<<val10<<std::endl;
 }
