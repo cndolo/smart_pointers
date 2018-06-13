@@ -5,6 +5,8 @@ with gcc:
 
 g++ -fpermissive main.cc
 
+g++ Config.cc main.cc
+
 TODO:
 
 1. = operator may not be inherited
