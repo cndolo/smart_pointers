@@ -1,6 +1,6 @@
 #include <iostream>
-
-class ImagePhysPtr64 : public AbstractPhysPtr64<config64phys> {
+template<class T>
+class ImagePhysPtr64 : public AbstractPhysPtr64<ImageConfig, T> {
 
 public:
 

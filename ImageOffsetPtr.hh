@@ -1,10 +1,10 @@
 #include <iostream>
-
-class ImageOffsetPtr : public AbstractOffsetPtr<configOffset> {
+template <class T>
+class ImageOffsetPtr : public AbstractOffsetPtr<ImageConfig, T> {
 
 public:
 
-	ImageOffsetPtr() {
+		ImageOffsetPtr() {
 		std::cout<<"hello from ImageOffsetPtr"<<std::endl;		
 	}
 

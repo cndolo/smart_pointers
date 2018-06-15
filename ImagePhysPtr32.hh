@@ -1,6 +1,6 @@
 #include <iostream>
-
-class ImagePhysPtr32 : public AbstractPhysPtr32<config32phys> {
+template<class T>
+class ImagePhysPtr32 : public AbstractPhysPtr32<ImageConfig, T> {
 
 public:
 
