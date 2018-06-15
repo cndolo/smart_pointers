@@ -1,11 +1,11 @@
 #include <iostream>
-
-class KernelPhysPtr64 : public AbstractPhysPtr64<config64phys> {
+template<class T>
+class KernelPhysPtr64 : public AbstractPhysPtr64<KernelConfig, T> {
 
 public:
 
 	KernelPhysPtr64() {
-		std::cout <<"hello from KernelPhysPtr64"<<std::endl;
+		std::cout<<"hello from KernelPhysPtr64"<<std::endl;		
 	}
 
 };

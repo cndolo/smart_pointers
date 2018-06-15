@@ -1,10 +1,10 @@
 #include <iostream>
-
-class KernelOffsetPtr : public AbstractOffsetPtr<configOffset> {
+template <class T>
+class KernelOffsetPtr : public AbstractOffsetPtr<KernelConfig, T> {
 
 public:
 
-	KernelOffsetPtr() {
+		KernelOffsetPtr() {
 		std::cout<<"hello from KernelOffsetPtr"<<std::endl;		
 	}
 
