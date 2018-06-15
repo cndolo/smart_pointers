@@ -1,70 +1,13 @@
-template <typename T>
+template<class CFG, typename T>
+class AbstractOffsetPtr {
 
-class AbstractOffsetPtr : public T {
-
-public: 
-
-	AbstractOffsetPtr() : ptr(0) {}
-
-	explicit AbstractOffsetPtr(uint32_t ptr) : ptr(ptr) {}
+public:
 	
-	explicit AbstractOffsetPtr(uint64_t ptr) : ptr(uint32_t(ptr)) {}
-
-	// first expression always evaluates to true so can be removed
-	bool isKernelAddress(const void* ptr) 
-	{
-		auto p = reinterpret_cast<uintptr_t>(ptr);
-		return (p + T::getPhys() >= T::getPhys()) && (p + T::getPhys() < T::getPhys() + T::getSize()); 
-	}
-
-	// first expression always evaluates to true so can be removed
-	bool isImageAddress(const void* ptr) {
-		auto p = reinterpret_cast<uintptr_t>(ptr);
-		return (p + T::getPhys() >= T::getPhys()) && (p + T::getPhys() < T::getVirt() + T::getSize() + uintptr_t(&KERN_END));
-		//return (p + T::getPhys() >= T::getPhys()) && (p + T::getPhys() < T::getVirt() + uintptr_t(&KERN_END));
-	}
-
-	static AbstractOffsetPtr fromPhys(AbstractOffsetPtr* ptr) {
-		return AbstractOffsetPtr(reinterpret_cast<uintptr_t>(ptr));
-	}
+	typedef T valuetype;
 	
-	// Image -> phys 
-	static AbstractOffsetPtr fromImage(AbstractOffsetPtr* vp) {
-      //ASSERT(isImageAddress(vp));
-      return AbstractOffsetPtr(reinterpret_cast<uintptr_t>(vp) - T::getPhys() -  T::getVirt());
-    }
-   
-	// Kernel -> phys 
-	static AbstractOffsetPtr fromKernel(AbstractOffsetPtr* vp) {
-      //ASSERT(isKernelAddress(vp));
-      return reinterpret_cast<AbstractOffsetPtr*>(reinterpret_cast<uintptr_t>(vp) - T::getPhys());
-    }
+	uint64_t phys() { return  CFG::physBase + offs; }
+
 	
-	//phys -> image
-	static AbstractOffsetPtr toImage(AbstractOffsetPtr* ptr) {
-		return reinterpret_cast<AbstractOffsetPtr*>(reinterpret_cast<uintptr_t>(ptr) + T::getPhys() +T::getVirt());
-	}
-
-	static AbstractOffsetPtr phys2kernel (AbstractOffsetPtr* phys) {
-		//ASSERT(isValidAddress(reinterpret_cast<const void*>(phys)));
-		return AbstractOffsetPtr(reinterpret_cast<uintptr_t>(phys) + T::getPhys());
-	}	
-
-	uint32_t kernel2phys(AbstractOffsetPtr* vp) {
-    	//ASSERT(isKernelAddress(vp));
-    	return uint32_t(reinterpret_cast<uintptr_t>(vp) - T::getPhys());
-  	}
-
-	AbstractOffsetPtr* image2kernel(AbstractOffsetPtr* vp) {
-    	//ASSERT(isImageAddress(vp));
-    	return reinterpret_cast<AbstractOffsetPtr**>(reinterpret_cast<uintptr_t>(vp) - T::getVirt() + T::getPhys());
-  	}	
-  	
-	AbstractOffsetPtr* kernel2image(AbstractOffsetPtr* kp) {
-		//ASSERT(isKernelAddress(kp));
-		return reinterpret_cast<AbstractOffsetPtr*>(reinterpret_cast<uintptr_t>(kp) + T::getVirt - T::getPhys());
-	}
-
 	explicit operator bool() const { return ptr != 0; }
     bool operator==(AbstractOffsetPtr rhs) const { return ptr == rhs.ptr; }
     bool operator!=(AbstractOffsetPtr rhs) const { return ptr != rhs.ptr; }
@@ -82,15 +25,46 @@ public:
     AbstractOffsetPtr operator-(size_t inc) const { return AbstractOffsetPtr(ptr-sizeof(T)*inc); }
     size_t operator-(AbstractOffsetPtr rhs) const { return (ptr-rhs)/sizeof(T); }
 
-    AbstractOffsetPtr& operator=(AbstractOffsetPtr rhs) { ptr = rhs.ptr; return *this; }
+	AbstractOffsetPtr& operator=(AbstractOffsetPtr rhs) { ptr = rhs.ptr; return *this; }
+	
+	bool mem() const { return offs < T::physBase(); }
+		
+	bool canonical() const
+  	{
+      	static constexpr uintptr_t CANONICAL_MASK = ((1ull << (64 - 48))-1) << 48;
+      	return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
+   	}
 
+	uintptr_t physint() const { return ptr; }
 
-protected:
+	uintptr_t logint() const {
+		ASSERT(kernelmem());
+		return ptr + T::getPhys();
+	}
+	
+	uintptr_t logint() const {
+		//ASSERT(kernelmem());
+		return phys();
+	}
 
+	AbstractOffsetPtr* logical() const { return reinterpret_cast<AbstractOffsetPtr*>(logint()); }
+
+	AbstractOffsetPtr* operator->() const { return logical(); }
+
+private:
 	uint32_t ptr;
-	//g++
-	// const char KERN_END = ("KERN_END");
-	//clang++
-	const char* KERN_END = "KERN_END";
+	uint32_t offs;
 };
+
+
+
+
+
+
+
+
+
+
+
+
 

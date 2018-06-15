@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "Config.hh"
 //#include "AbstractOffsetPtr.hh"
+#include "Globals.hh"
 
 int main(int argv, char* argc[]) {
 
@@ -21,4 +22,9 @@ int main(int argv, char* argc[]) {
 
 	uint64_t physBase = ImageConfig::physBase();
 	std::cout<<"physBase: "<<physBase<<std::endl;	
+
+	isEqual<int, double> eq;
+	
+	isEqual<int, int> hello;
+	
 }
