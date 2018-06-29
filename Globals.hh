@@ -1,5 +1,6 @@
 template <class TO, class FROM>
 inline TO convert(FROM from) {
+	//static_assert(isEqual<TO:: >);
 	if(TO::isValidPhysAddress(from.phys())) {
 		return TO::fromPhys(from.phys());
 	} else {

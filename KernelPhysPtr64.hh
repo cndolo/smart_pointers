@@ -1,11 +1,8 @@
-#include <iostream>
+#include "AbstractPhysPtr64.hh"
+
 template<class T>
 class KernelPhysPtr64 : public AbstractPhysPtr64<KernelConfig, T> {
 
 public:
-
-	KernelPhysPtr64() {
-		std::cout<<"hello from KernelPhysPtr64"<<std::endl;		
-	}
-
+	using AbstractPhysPtr64<KernelConfig, T>::AbstractPhysPtr64;
 };

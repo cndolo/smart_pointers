@@ -1,11 +1,9 @@
-#include <iostream>
+#include "AbstractPhysPtr64.hh"
+
 template<class T>
 class ImagePhysPtr64 : public AbstractPhysPtr64<ImageConfig, T> {
 
 public:
-
-	ImagePhysPtr64() {
-		std::cout<<"hello from ImagePhysPtr64"<<std::endl;		
-	}
-
+	
+	using AbstractPhysPtr64<ImageConfig,T>::AbstractPhysPtr64;
 };

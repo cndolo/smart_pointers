@@ -1,11 +1,9 @@
-#include <iostream>
-template<class T>
-class ImagePhysPtr32 : public AbstractPhysPtr32<ImageConfig, T> {
+#include "AbstractPhysPtr32.hh"
 
+template<class T>
+
+class ImagePhysPtr32 : public AbstractPhysPtr32<ImageConfig, T> {
 public:
 
-	ImagePhysPtr32() {
-		std::cout<<"hello from ImagePhysPtr32"<<std::endl;		
-	}
-
+	using AbstractPhysPtr32<ImageConfig, T>::AbstractPhysPtr32;
 };

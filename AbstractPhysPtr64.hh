@@ -1,41 +1,43 @@
-template<typename T>
+#pragma once
 
-class AbstractPhysPtr64 : public T {
+template<typename CFG, typename T>
+class AbstractPhysPtr64 {
 
 public:
+
+	typedef T valuetype;
 
 	AbstractPhysPtr64() : ptr(0) {}
 
 	explicit AbstractPhysPtr64(uint64_t ptr) : ptr(ptr) {} 
 
-	bool isKernelAddress(const void* ptr) 
+	static bool isValidPhysAddress(uintptr_t ptr) 
 	{
-		auto p = reinterpret_cast<uintptr_t>(ptr);
-				return (p >= T::getPhys()) && (p < T::getPhys() + T::getSize()); 
+		return (ptr >= CFG::physBase()) && (ptr < CFG::physBase() + CFG::size()); 
 	}
 	
-	bool isImageAddress(const void* ptr)
+	static bool isValidVirtAddress(uintptr_t ptr)
   	{
-    	auto p = reinterpret_cast<uintptr_t>(ptr);
-    	return (p >= T::getVirt()) && (p < T::getVirt() + uintptr_t(&KERN_END));
+    	return (ptr >= CFG::virtBase()) && (ptr < CFG::virtBase() + CFG::size());
   	}
 
-	static AbstractPhysPtr64 fromPhys(AbstractPhysPtr64* ptr) {
+	static AbstractPhysPtr64 fromPhys(AbstractPhysPtr64* ptr) 
+	{
 		return AbstractPhysPtr64(reinterpret_cast<uintptr_t>(ptr));
 	}
     
 	// Image -> phys 
-	static AbstractPhysPtr64 fromImage(AbstractPhysPtr64* vp) {
+	static AbstractPhysPtr64 fromVirt(AbstractPhysPtr64* vp) {
       //ASSERT(isImageAddress(vp));
-      return AbstractPhysPtr64(reinterpret_cast<uintptr_t>(vp) - T::getVirt());
+      return AbstractPhysPtr64(reinterpret_cast<uintptr_t>(vp) - CFG::virtBase());
     }
    
 	// Kernel -> phys 
-	static AbstractPhysPtr64 fromKernel(AbstractPhysPtr64* vp) {
+	static AbstractPhysPtr64 fromPhys(uintptr_t ptr) {
       //ASSERT(isKernelAddress(vp));
-      return reinterpret_cast<AbstractPhysPtr64*>(reinterpret_cast<uintptr_t>(vp) - T::getPhys());
+      return AbstractPhysPtr64(ptr);
     }
-	
+/*	
 	//phys -> image
 	static AbstractPhysPtr64 toImage(AbstractPhysPtr64* ptr) {
 		return reinterpret_cast<AbstractPhysPtr64*>(reinterpret_cast<uintptr_t>(ptr) + T::getVirt());
@@ -60,7 +62,7 @@ public:
 		//ASSERT(isKernelAddress(kp));
 		return reinterpret_cast<AbstractPhysPtr64*>(reinterpret_cast<uintptr_t>(kp) + T::getVirt - T::getPhys());
 	}
-	
+*/	
 	explicit operator bool() const { return ptr != 0; }
     bool operator==(AbstractPhysPtr64 rhs) const { return ptr == rhs.ptr; }
     bool operator!=(AbstractPhysPtr64 rhs) const { return ptr != rhs.ptr; }
@@ -80,24 +82,26 @@ public:
 
     AbstractPhysPtr64& operator=(AbstractPhysPtr64 rhs) { ptr = rhs.ptr; return *this; }
 
-	bool kernelmem() const { return ptr < T::getSize(); }
-		
+	uintptr_t phys() const { return CFG::physBase() + ptr; }
+	
+	uintptr_t physint() const { return ptr; }
+	
+	uintptr_t logint() const {
+		ASSERT(mem());
+		return phys();
+	}
+
+	bool mem() const { return ptr < CFG::size(); }
+	
 	bool canonical() const
   	{
       	static constexpr uintptr_t CANONICAL_MASK = ((1ull << (64 - 48))-1) << 48;
       	return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
-   	}
+   	}	
 
-	uintptr_t physint() const { return ptr; }
+	AbstractPhysPtr64* log() const { return reinterpret_cast<AbstractPhysPtr64*>(logint()); }
 
-	uintptr_t logint() const {
-		ASSERT(kernelmem());
-		return ptr + T::getPhys();
-	}
-
-	AbstractPhysPtr64* logical() const { return reinterpret_cast<AbstractPhysPtr64*>(logint()); }
-
-	AbstractPhysPtr64* operator->() const { return logical(); }
+	AbstractPhysPtr64* operator->() const { return log(); }
 
 protected:
 	uint64_t ptr;

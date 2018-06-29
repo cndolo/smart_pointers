@@ -1,11 +1,11 @@
-#include <iostream>
+#include "AbstractPhysPtr64.hh"
+
+
 template<class T>
 class MMIOPhysPtr64 : public AbstractPhysPtr64<MMIOConfig, T> {
 
 public:
 
-	MMIOPhysPtr64() {
-		std::cout<<"hello from MMIOPhysPtr64"<<std::endl;		
-	}
+	using AbstractPhysPtr64<MMIOConfig, T>::AbstractPhysPtr64;
 
 };
