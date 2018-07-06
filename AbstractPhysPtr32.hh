@@ -23,7 +23,6 @@ public:
     	return (ptr >= CFG::virtBase()) && (ptr < CFG::virtBase() + CFG::size());
   	}
 	
-
 	// Kernel -> phys 
 	static AbstractPhysPtr32 fromPhys(T* vp) {
       //ASSERT(isKernelAddress(vp));

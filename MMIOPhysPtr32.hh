@@ -1,5 +1,5 @@
 #include "AbstractPhysPtr32.hh"
-#include <iostream>
+
 
 template<class T>
 class MMIOPhysPtr32 : public AbstractPhysPtr32<MMIOConfig, T> {

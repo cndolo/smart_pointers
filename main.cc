@@ -59,7 +59,9 @@ int main(int argv, char* argc[]) {
 	AbstractOffsetPtr32<ImageConfig, int> off;
 	ImageOffsetPtr32<int>* image = new ImageOffsetPtr32<int>();
 
-//	ImageOffsetPtr32<int>* image2 = new ImageO
+	uint64_t i_ptr = (uint64_t) (ptr + 1);
+
+	ImageOffsetPtr32<int>* image2 = new ImageOffsetPtr32<int>(i_ptr);
 
 	bool val = image->isValidPhysAddress(ptr);
 	std::cout<<ptr<<" valid: "<<val<<std::endl;	
