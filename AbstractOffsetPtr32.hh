@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 template<class CFG, typename T>
 class AbstractOffsetPtr32 {
 
@@ -58,7 +60,7 @@ public:
 	uintptr_t offset() const { return offs; }
 	
 	uintptr_t logint() const {
-		//ASSERT(mem());
+		assert(mem());
 		return phys();
 	}
 	
@@ -70,9 +72,9 @@ public:
       	return (offs & CANONICAL_MASK) == 0 || (offs & CANONICAL_MASK) == CANONICAL_MASK;
    	}
 
-	AbstractOffsetPtr32* log() const { return reinterpret_cast<AbstractOffsetPtr32*>(logint()); }
+	T* log() const { return reinterpret_cast<T*>(logint()); }
 
-	AbstractOffsetPtr32* operator->() const { return log(); }
+	T* operator->() const { return log(); }
 
 protected:
 	uint32_t offs;

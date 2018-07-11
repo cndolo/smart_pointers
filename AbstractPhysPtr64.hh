@@ -25,13 +25,13 @@ public:
     	return (ptr >= CFG::virtBase()) && (ptr < CFG::virtBase() + CFG::size());
   	}
 
-	static AbstractPhysPtr64 fromPhys(AbstractPhysPtr64* ptr) 
+	static AbstractPhysPtr64 fromPhys(T* ptr) 
 	{
 		return AbstractPhysPtr64(reinterpret_cast<uintptr_t>(ptr));
 	}
     
 	// Image -> phys 
-	static AbstractPhysPtr64 fromVirt(AbstractPhysPtr64* vp) {
+	static AbstractPhysPtr64 fromVirt(T* vp) {
       //ASSERT(isImageAddress(vp));
       return AbstractPhysPtr64(reinterpret_cast<uintptr_t>(vp) - CFG::virtBase());
     }
@@ -91,7 +91,7 @@ public:
 	uintptr_t physint() const { return ptr; }
 	
 	uintptr_t logint() const {
-		//ASSERT(mem());
+		assert(mem());
 		return phys();
 	}
 
@@ -107,9 +107,9 @@ public:
       	return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
    	}	
 
-	AbstractPhysPtr64* log() const { return reinterpret_cast<AbstractPhysPtr64*>(logint()); }
+	T* log() const { return reinterpret_cast<T*>(logint()); }
 
-	AbstractPhysPtr64* operator->() const { return log(); }
+	T* operator->() const { return log(); }
 
 protected:
 	uint64_t ptr;

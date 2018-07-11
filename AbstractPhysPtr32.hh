@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 template<class CFG, typename T>
 class AbstractPhysPtr32 {
 
@@ -25,12 +27,12 @@ public:
 	
 	// Kernel -> phys 
 	static AbstractPhysPtr32 fromPhys(T* vp) {
-      //ASSERT(isKernelAddress(vp));
+      asser(isValidPhysAddress(vp));
       return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(vp) - CFG::physBase());
     }
  	// Image -> phys 
-	static AbstractPhysPtr32 fromVirt(AbstractPhysPtr32* vp) {
-      //ASSERT(isImageAddress(vp));
+	static AbstractPhysPtr32 fromVirt(T* vp) {
+      assert(isValidVirtAddress(vp));
       return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(vp) - CFG::virtBase());
     }   
 
@@ -87,7 +89,7 @@ public:
 	uintptr_t physint() const { return ptr; }
 	
 	uintptr_t logint() const {
-		//ASSERT(mem());
+		assert(mem());
 		return phys();
 	}
 
@@ -99,9 +101,9 @@ public:
       	return (ptr & CANONICAL_MASK) == 0 || (ptr & CANONICAL_MASK) == CANONICAL_MASK;
    	}
 
-	AbstractPhysPtr32* log() const { return reinterpret_cast<AbstractPhysPtr32*>(logint()); }
+	T* log() const { return reinterpret_cast<T*>(logint()); }
 
-	AbstractPhysPtr32* operator->() const { return log(); }
+	T* operator->() const { return log(); }
 
 	
 protected:

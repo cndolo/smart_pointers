@@ -143,6 +143,9 @@ int main(int argv, char* argc[]) {
 	
 	std::cout<<"-------- 64 BIT PHYS --------"<<std::endl;
 
+	int x = 100;
+	int y = x;
+
 	std::cout<<"physBase: "<<MMIOConfig::physBase()<<std::endl;
 	uintptr_t m_phys = phys + phys + 1;
 	MMIOConfig::setPhysBase(m_phys);
@@ -163,8 +166,9 @@ int main(int argv, char* argc[]) {
 	auto from_phys = MMIOPhysPtr64<int>::fromPhys(ptr);
 	std::cout<<"ptr: "<<mmio->getPtr()<<std::endl;
 	
-	auto fromVirt = MMIOPhysPtr64<int>::fromVirt(&from_phys);
-	uintptr_t phys_int = fromVirt->physint();	
+	auto fromVirt = MMIOPhysPtr64<int>::fromVirt(&x);
+	
+	uintptr_t phys_int = fromVirt.physint();	
 
 	uint64_t m_ptr = (uint64_t) ptr;
 
@@ -200,10 +204,10 @@ int main(int argv, char* argc[]) {
 	bool m_can = mmio->canonical();
 	std::cout<<m_can<<std::endl;
 
-	auto m_from_p = MMIOPhysPtr64<int>::fromPhys(mmio);
-	auto m_from_v = MMIOPhysPtr64<int>::fromVirt(mmio);
+	auto m_from_p = MMIOPhysPtr64<int>::fromPhys(&x);
+	auto m_from_v = MMIOPhysPtr64<int>::fromVirt(&y);
 
 	auto test = MMIOPhysPtr64<int>::fromPhys(ptr7);
-
+	bool is_mem = test.mem();
 }
 
