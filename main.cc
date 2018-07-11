@@ -143,12 +143,6 @@ int main(int argv, char* argc[]) {
 	
 	std::cout<<"-------- 64 BIT PHYS --------"<<std::endl;
 
-	MMIOPhysPtr64<int>* mmio = new MMIOPhysPtr64<int>();
-
-	uint64_t m_ptr = (uint64_t) ptr;
-
-	MMIOPhysPtr64<int>* mmio2 = new MMIOPhysPtr64<int>(m_ptr);
-
 	std::cout<<"physBase: "<<MMIOConfig::physBase()<<std::endl;
 	uintptr_t m_phys = phys + phys + 1;
 	MMIOConfig::setPhysBase(m_phys);
@@ -162,6 +156,22 @@ int main(int argv, char* argc[]) {
 	MMIOConfig::setSize(m_size);	
 	std::cout<<"size: "<<MMIOConfig::size()<<std::endl;
 	
+	MMIOPhysPtr64<int>* mmio = new MMIOPhysPtr64<int>();
+
+	std::cout<<"ptr: "<<ptr<<std::endl;
+
+	auto from_phys = MMIOPhysPtr64<int>::fromPhys(ptr);
+	std::cout<<"ptr: "<<mmio->getPtr()<<std::endl;
+	
+	auto fromVirt = MMIOPhysPtr64<int>::fromVirt(&from_phys);
+	uintptr_t phys_int = fromVirt->physint();	
+
+	uint64_t m_ptr = (uint64_t) ptr;
+
+	MMIOPhysPtr64<int>* mmio2 = new MMIOPhysPtr64<int>(m_ptr);
+	
+	std::cout<<"ptr: "<<mmio2->getPtr()<<std::endl;
+	
 	uintptr_t ptr7 = m_phys + m_phys;
    	uintptr_t ptr8 = m_phys + size;	
 	uintptr_t ptr9 = m_virt + 1;
@@ -174,6 +184,15 @@ int main(int argv, char* argc[]) {
 
 	bool val11 = mmio->isValidVirtAddress(ptr9);
 	std::cout<<ptr9<<" valid: "<<val11<<std::endl;
+
+	ptr9 = mmio->physint();
+	val9 = mmio->isValidPhysAddress(ptr9);
+	std::cout<<ptr9<<" valid: "<<val9<<std::endl;
+
+	auto new_abs = MMIOPhysPtr64<int>::fromPhys(ptr9);
+	std::cout<<"ptr 9: "<<ptr9<<std::endl;
+	ptr9 = mmio->physint();
+	std::cout<<"ptr 9: "<<ptr9<<std::endl;
 
 	bool m_mem = mmio->mem();
 	std::cout<<m_mem<<std::endl;

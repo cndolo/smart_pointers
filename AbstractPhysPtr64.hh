@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 template<typename CFG, typename T>
 class AbstractPhysPtr64 {
 
@@ -10,6 +12,8 @@ public:
 	AbstractPhysPtr64() : ptr(0) {}
 
 	explicit AbstractPhysPtr64(uint64_t ptr) : ptr(ptr) {} 
+
+	explicit AbstractPhysPtr64(uintptr_t ptr) : ptr(ptr) {}
 
 	static bool isValidPhysAddress(uintptr_t ptr) 
 	{
@@ -82,15 +86,19 @@ public:
 
     AbstractPhysPtr64& operator=(AbstractPhysPtr64 rhs) { ptr = rhs.ptr; return *this; }
 
-	uintptr_t phys() const { return CFG::physBase() + ptr; }
+	uintptr_t phys() const { return ptr + CFG::virtBase() - CFG::physBase(); }
 	
 	uintptr_t physint() const { return ptr; }
 	
 	uintptr_t logint() const {
-		ASSERT(mem());
+		//ASSERT(mem());
 		return phys();
 	}
 
+	uintptr_t getPtr() const {
+		return ptr;
+	}
+		
 	bool mem() const { return ptr < CFG::size(); }
 	
 	bool canonical() const

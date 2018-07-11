@@ -82,7 +82,7 @@ public:
 
     AbstractPhysPtr32& operator=(AbstractPhysPtr32 rhs) { ptr = rhs.ptr; return *this; }
 
-	uintptr_t phys() const { return CFG::physBase() + ptr; }
+	uintptr_t phys() const { return ptr + CFG::virtBase() - CFG::physBase(); }
 		
 	uintptr_t physint() const { return ptr; }
 	
