@@ -13,8 +13,6 @@ public:
 
 	explicit AbstractPhysPtr64(uint64_t ptr) : ptr(ptr) {} 
 
-	explicit AbstractPhysPtr64(uintptr_t ptr) : ptr(ptr) {}
-
 	static bool isValidPhysAddress(uintptr_t ptr) 
 	{
 		return (ptr >= CFG::physBase()) && (ptr < CFG::physBase() + CFG::size()); 

@@ -6,10 +6,10 @@ struct ImageConfig{
 	static uint64_t PHYS_BASE;
 	static size_t SIZE;
 	uint64_t static VIRT_BASE; 
-	
+	static uint64_t KERN_END;
 	static uint64_t physBase() { return ImageConfig::PHYS_BASE; }
 	static size_t size() { return ImageConfig::SIZE; }
-	static uint64_t virtBase() { return ImageConfig::VIRT_BASE; }
+	static uint64_t virtBase() { return ImageConfig::VIRT_BASE; }	
 
 	static void setPhysBase(uint64_t phys) { ImageConfig::PHYS_BASE = phys; }
 	static void setSize(size_t size) { ImageConfig::SIZE = size; }
