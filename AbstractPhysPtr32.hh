@@ -27,14 +27,14 @@ public:
 	
 	// Kernel -> phys 
 	static AbstractPhysPtr32 fromPhys(T* vp) {
-      asser(isValidPhysAddress(vp));
-      return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(vp) - CFG::physBase());
-    }
+      		assert(isValidPhysAddress(vp));
+      		return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(vp) - CFG::physBase());
+    	}
  	// Image -> phys 
 	static AbstractPhysPtr32 fromVirt(T* vp) {
-      assert(isValidVirtAddress(vp));
-      return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(vp) - CFG::virtBase());
-    }   
+      		assert(isValidVirtAddress(vp));
+      		return AbstractPhysPtr32(reinterpret_cast<uintptr_t>(vp) - CFG::virtBase());
+    	}   
 
 	static AbstractPhysPtr32 fromPhys(uintptr_t ptr) {
 		return AbstractPhysPtr32(ptr - CFG::physBase());

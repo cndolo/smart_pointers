@@ -5,7 +5,7 @@
 struct ImageConfig{
 	static uint64_t PHYS_BASE;
 	static size_t SIZE;
-	uint64_t static VIRT_BASE; 
+	static uint64_t VIRT_BASE; 
 	static uint64_t KERN_END;
 	static uint64_t physBase() { return ImageConfig::PHYS_BASE; }
 	static size_t size() { return ImageConfig::SIZE; }
